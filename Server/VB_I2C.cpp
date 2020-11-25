@@ -127,13 +127,13 @@ void VbI2C::clearServerData()
 
 void VbI2C::receiveEvent()
 {
-#ifdef DEBUG
-    Serial.println("RECEIVED DATA");
-#endif
+
     // Si on reçoit des données
     if (Wire.available())
     {
-
+#ifdef DEBUG
+        Serial.println("RECEIVED DATA FROM WIRE (Wire.available() == true)");
+#endif
         // On transfère les bytes reçues dans un emplacement mémoire. On caste en uint8_t (Au final, ce sont des uint8_t)
         Wire.readBytes((uint8_t *)this->clientDataQueue[this->clientDataAvailable++], 32);
 #ifdef DEBUG
@@ -198,6 +198,12 @@ void VbI2C::receiveEvent()
                 this->userDataReceivedCallback();
             }
         }
+    }
+    else
+    {
+#ifdef DEBUG
+        Serial.println("/!\\ NO DATA FROM WIRE (Wire.available() == false)");
+#endif
     }
 }
 
@@ -290,7 +296,7 @@ void VbI2C::tick()
 
         uint8_t clientId = this->clients[clientIndex];
 #ifdef DEBUG
-        Serial.print("Client, ");
+        Serial.print("Client #");
         Serial.print(clientId);
         Serial.println(" sending packet request... ");
 #endif
