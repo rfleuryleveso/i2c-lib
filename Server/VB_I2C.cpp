@@ -269,7 +269,7 @@ void VbI2C::tick()
         {
             // Si le paquet est destiné au client
             uint8_t target = this->serverDataQueue[packetId]->clientId;
-            if (target == clientId || target == -1)
+            if (target == clientId || target == 255)
             {
 #ifdef DEBUG
                 Serial.print("  Packet #");
